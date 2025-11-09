@@ -6,10 +6,10 @@ Para esse projeto, além de mudarmos o JSON para o JSON Server, vamos permitir o
 
 ## Informações do trabalho
 
-- Nome:
-- Matricula:
-- Proposta de projeto escolhida:
-- Breve descrição sobre seu projeto:
+- Nome: Alex Prieto Garbazza Ferraz
+- Matricula: 897619
+- Proposta de projeto escolhida: Pokemon
+- Breve descrição sobre seu projeto: Sobre os pokemons, suas caracteristicas e estatisticas
 
 **Print dos testes da API com Postman ou similar**
 
