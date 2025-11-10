@@ -11,95 +11,28 @@
       font-family: Arial, sans-serif; 
       padding-top: 80px; 
     }
-
-    .banner img { 
-      max-width: 100%; 
-      height: auto; 
-      border-radius: 15px; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
-    }
-
-    .card { 
-      border-radius: 15px; 
-      overflow: hidden; 
-      transition: transform 0.3s ease, box-shadow 0.3s ease; 
-      cursor: pointer; 
-    }
-    .card:hover { 
-      transform: translateY(-5px); 
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3); 
-    }
-
-    .card-img { 
-      position: relative; 
-      height: 180px; 
-      background-color: #fff; 
-    }
-    .card-img .static, .card-img .gif { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: contain; 
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-      transition: opacity 0.3s ease; 
-    }
+    .banner img { max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .card { border-radius: 15px; overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; cursor: pointer; }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+    .card-img { position: relative; height: 180px; background-color: #fff; }
+    .card-img .static, .card-img .gif { width: 100%; height: 100%; object-fit: contain; position: absolute; top: 0; left: 0; transition: opacity 0.3s ease; }
     .card-img .gif { opacity: 0; }
     .card-img:hover .gif { opacity: 1; }
     .card-img:hover .static { opacity: 0; }
-
-    #carouselDestaque { 
-      border-radius: 15px; 
-      overflow: hidden; 
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3); 
-      max-height: 500px; 
-    }
-    .carousel-item { 
-      height: 500px; 
-    }
-    .carousel-item img { 
-      width: 100%; 
-      height: 100%; 
-      object-fit: cover; 
-      transition: transform 0.5s ease; 
-      border-radius: 15px; 
-    }
-    .carousel-item a:hover img { 
-      transform: scale(1.05); 
-    }
-    .carousel-caption { 
-      background-color: rgba(0,0,0,0.5); 
-      border-radius: 10px; 
-      padding: 10px 15px; 
-    }
-    .carousel-caption h5 { 
-      font-size: 1.5rem; 
-      font-weight: bold; 
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7); 
-    }
-    .carousel-caption p { 
-      font-size: 1rem; 
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.7); 
-    }
-
-    footer { 
-      background-color: #222; 
-      color: #fff; 
-      text-align: center; 
-      padding: 1rem; 
-      margin-top: 3rem; 
-    }
-
-    h2.section-title { 
-      font-size: 1.5rem; 
-      font-weight: bold; 
-      margin: 2rem 0 1rem; 
-      border-left: 5px solid #007bff; 
-      padding-left: 10px; 
-    }
+    #carouselDestaque { border-radius: 15px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3); max-height: 500px; }
+    .carousel-item { height: 500px; }
+    .carousel-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; border-radius: 15px; }
+    .carousel-item a:hover img { transform: scale(1.05); }
+    .carousel-caption { background-color: rgba(0,0,0,0.5); border-radius: 10px; padding: 10px 15px; }
+    .carousel-caption h5 { font-size: 1.5rem; font-weight: bold; text-shadow: 2px 2px 5px rgba(0,0,0,0.7); }
+    .carousel-caption p { font-size: 1rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    footer { background-color: #222; color: #fff; text-align: center; padding: 1rem; margin-top: 3rem; }
+    h2.section-title { font-size: 1.5rem; font-weight: bold; margin: 2rem 0 1rem; border-left: 5px solid #007bff; padding-left: 10px; }
   </style>
 </head>
 <body>
+
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top border-bottom shadow-sm">
     <div class="container">
       <a class="navbar-brand" href="#">Pokewiki</a>
@@ -108,17 +41,20 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0" id="pokemon-menu"></ul>
-        <button class="btn btn-outline-primary ms-3">Login</button>
       </div>
     </div>
   </nav>
 
+  <!-- Banner -->
   <section class="banner container my-4">
     <img src="pokemonbanner.jpg" alt="Pokémon Banner" class="img-fluid mx-auto d-block">
   </section>
 
+  <!-- Main Content -->
   <main class="container">
-    <h2 class="section-title">Pokemon em Destaque</h2>
+
+    <!-- Carrossel de destaque -->
+    <h2 class="section-title">Pokémon em Destaque</h2>
     <div id="carouselDestaque" class="carousel slide mb-5" data-bs-ride="carousel">
       <div class="carousel-indicators" id="carousel-indicators"></div>
       <div class="carousel-inner" id="destaque-pokemons"></div>
@@ -130,26 +66,41 @@
       </button>
     </div>
 
-    <h2 class="section-title">Todos os Pokemon</h2>
+    <!-- Lista de Pokémons -->
+    <h2 class="section-title">Todos os Pokémon</h2>
     <div class="row g-4" id="lista-pokemons"></div>
 
-    <section class="mt-5">
-      <h2 class="section-title">Informações do(a) Aluno(a)</h2>
-      <div class="p-3 bg-white shadow-sm rounded">
-        <p><strong>Nome:</strong> Alex Prieto</p>
-        <p><strong>Curso:</strong> Análise e Desenvolvimento de Sistemas</p>
-        <p><strong>Turma:</strong> Periodo 1, Segundo Semestre 2025, Noite, PUC Minas São Gabriel</p>
-        <p><strong>Sobre:</strong> Trabalho prático de DIW, Wikipédia sobre Pokemon.</p>
-        <p><strong>Links:</strong> 
-          <a href="https://github.com/AlexPMG" class="text-decoration-none text-primary" target="_blank">GitHub</a>
-        </p>
+    <!-- CRUD Usuários -->
+    <h2 class="section-title mt-5">Gerenciar Usuários</h2>
+
+    <!-- Formulário para adicionar usuário -->
+    <form id="form-usuario" class="mb-4">
+      <div class="row g-2">
+        <div class="col-md-4">
+          <input type="text" id="nome" placeholder="Nome" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <input type="email" id="email" placeholder="Email" class="form-control" required>
+        </div>
+        <div class="col-md-4">
+          <input type="password" id="senha" placeholder="Senha" class="form-control" required>
+        </div>
       </div>
-    </section>
+      <button type="submit" class="btn btn-primary mt-2">Adicionar Usuário</button>
+    </form>
+
+    <!-- Lista de usuários -->
+    <ul id="lista-usuarios" class="list-group"></ul>
+
   </main>
 
+  <!-- Footer -->
   <footer>Aluno: Alex Prieto | PUC Minas - São Gabriel</footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="app.js"></script>
+  <!-- Scripts -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="app.js"></script>
+
+
 </body>
 </html>

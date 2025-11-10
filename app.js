@@ -58,6 +58,7 @@ const pokemons = [
   }
 ];
 
+// ==================== POKÉMONS ====================
 function montarHome() {
   const container = document.getElementById('lista-pokemons');
   if(!container) return;
@@ -89,6 +90,8 @@ function montarCarrossel() {
   const destaqueContainer = document.getElementById('destaque-pokemons');
   const indicadoresContainer = document.getElementById('carousel-indicators');
 
+  if(!destaqueContainer || !indicadoresContainer) return;
+
   destaqueContainer.innerHTML = '';
   indicadoresContainer.innerHTML = '';
 
@@ -110,15 +113,182 @@ function montarCarrossel() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  montarHome();
-  montarCarrossel();
-
+function montarMenu() {
   const menu = document.getElementById('pokemon-menu');
+  if(!menu) return;
+  
+  menu.innerHTML = '';
   pokemons.forEach(p => {
     const li = document.createElement('li');
     li.className = 'nav-item';
     li.innerHTML = `<a class="nav-link" href="detalhes.html?id=${p.id}">${p.nome}</a>`;
     menu.appendChild(li);
   });
+}
+
+// ==================== CRUD USUÁRIOS ====================
+const API_URL = 'http://localhost:8000/usuarios';
+
+// Funções globais para o onclick
+window.deletarUsuario = async function(id) {
+  if (!confirm('Tem certeza que deseja deletar este usuário?')) return;
+
+  try {
+    const response = await fetch(`${API_URL}/${id}`, { 
+      method: 'DELETE' 
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao deletar usuário');
+    }
+
+    listarUsuarios();
+    alert('Usuário deletado com sucesso!');
+  } catch (err) {
+    console.error("Erro ao deletar usuário:", err);
+    alert('Erro ao deletar usuário. Verifique o console para mais detalhes.');
+  }
+}
+
+window.editarUsuario = async function(id) {
+  try {
+    const res = await fetch(`${API_URL}/${id}`);
+    
+    if (!res.ok) {
+      throw new Error('Erro ao carregar usuário');
+    }
+    
+    const user = await res.json();
+
+    const novoNome = prompt('Novo nome:', user.nome);
+    if (novoNome === null) return;
+
+    const novoEmail = prompt('Novo email:', user.email);
+    if (novoEmail === null) return;
+
+    const novaSenha = prompt('Nova senha:', user.senha);
+    if (novaSenha === null) return;
+
+    if (novoNome && novoEmail && novaSenha) {
+      const response = await fetch(`${API_URL}/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome: novoNome, email: novoEmail, senha: novaSenha })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao atualizar usuário');
+      }
+
+      listarUsuarios();
+      alert('Usuário atualizado com sucesso!');
+    }
+  } catch (err) {
+    console.error("Erro ao editar usuário:", err);
+    alert('Erro ao editar usuário. Verifique o console para mais detalhes.');
+  }
+}
+
+async function listarUsuarios() {
+  const listaUsuarios = document.getElementById('lista-usuarios');
+  if(!listaUsuarios) return;
+
+  try {
+    const res = await fetch(API_URL);
+    
+    if (!res.ok) {
+      throw new Error(`Erro HTTP: ${res.status}`);
+    }
+    
+    const usuarios = await res.json();
+
+    listaUsuarios.innerHTML = '';
+
+    if (usuarios.length === 0) {
+      listaUsuarios.innerHTML = `
+        <li class="list-group-item text-center text-muted">
+          Nenhum usuário cadastrado
+        </li>
+      `;
+      return;
+    }
+
+    usuarios.forEach(user => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center usuario-item';
+      li.innerHTML = `
+        <div>
+          <strong>${user.nome}</strong><br>
+          <small class="text-muted">${user.email}</small>
+          <small class="badge bg-secondary">ID: ${user.id}</small>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-sm btn-warning me-1" onclick="editarUsuario(${user.id})">Editar</button>
+          <button class="btn btn-sm btn-danger" onclick="deletarUsuario(${user.id})">Deletar</button>
+        </div>
+      `;
+      listaUsuarios.appendChild(li);
+    });
+
+  } catch(err) {
+    console.error("Erro ao listar usuários:", err);
+    listaUsuarios.innerHTML = `
+      <li class="list-group-item text-center text-danger">
+        <strong>Erro ao carregar usuários</strong><br>
+        <small>${err.message}</small>
+        <br>
+        <button class="btn btn-sm btn-outline-primary mt-2" onclick="listarUsuarios()">
+          Tentar Novamente
+        </button>
+      </li>
+    `;
+  }
+}
+
+// Configurar formulário
+const formUsuario = document.getElementById('form-usuario');
+if(formUsuario) {
+  formUsuario.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nome = document.getElementById('nome').value;
+    const email = document.getElementById('email').value;
+    const senha = document.getElementById('senha').value;
+
+    if (!nome || !email || !senha) {
+      alert('Por favor, preencha todos os campos!');
+      return;
+    }
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nome, email, senha })
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao criar usuário');
+      }
+
+      formUsuario.reset();
+      listarUsuarios();
+      alert('Usuário adicionado com sucesso!');
+    } catch (err) {
+      console.error("Erro ao adicionar usuário:", err);
+      alert('Erro ao adicionar usuário. Verifique o console para mais detalhes.');
+    }
+  });
+}
+
+// ==================== INICIALIZAÇÃO ====================
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Iniciando aplicação...');
+  
+  // Carregar Pokémons
+  montarHome();
+  montarCarrossel();
+  montarMenu();
+
+  // Carregar usuários
+  listarUsuarios();
 });
